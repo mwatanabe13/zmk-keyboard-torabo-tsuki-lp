@@ -8,10 +8,6 @@
 &zip_temp_layer 1 1000
 >
 };
-&scroller {
-        layers = <2>;
-        input-processors = <&zip_xy_to_scroll_mapper>;
-    };
 &size_s_transform {
     col-offset = <7>;
 };
