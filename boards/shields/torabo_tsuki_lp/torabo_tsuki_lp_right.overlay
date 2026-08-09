@@ -2,11 +2,28 @@
 #include <input/processors.dtsi>
 #include <dt-bindings/zmk/input_transform.h>
 
+/* --- オートマウス発動条件の調整 ---
+ * 打鍵の振動でボールが微動 -> AML誤発動 -> 次のk/jがクリック化、を防ぐ。
+ * require-prior-idle-ms = 直前の打鍵からこの時間内はAMLを出さない(タイピング保護ガード)。
+ * 150 は短すぎて打鍵直後の振動で即発動していた -> 350 に延長(2026-06-16 修正)。
+ *   ・打鍵中はAMLが出ない(誤クリック消滅)
+ *   ・クリックしたいときは指を一瞬止めてからボールを動かせばAMLが出る
+ *   ・まだ誤発動するなら 400-500 へ、AMLが出づらすぎるなら 250 へ微調整。 */
+&zip_temp_layer {
+    require-prior-idle-ms = <250>;
+};
+
 &pointing_listener {
     input-processors = <
 &zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)
-&zip_temp_layer 1 1000
+&zip_temp_layer 1 400
 >;
+
+scroller {
+        layers = <2>;
+        input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT) &zip_xy_to_scroll_mapper>;
+        process-next;
+    };
 };
 
 &size_s_transform {
