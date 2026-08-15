@@ -10,13 +10,13 @@
  *   ・クリックしたいときは指を一瞬止めてからボールを動かせばAMLが出る
  *   ・まだ誤発動するなら 400-500 へ、AMLが出づらすぎるなら 250 へ微調整。 */
 &zip_temp_layer {
-    require-prior-idle-ms = <250>;
+    require-prior-idle-ms = <100>;
 };
 
 &pointing_listener {
     input-processors = <
 &zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)
-&zip_temp_layer 1 350
+&zip_temp_layer 1 250
 &zip_x_scaler 8 10
 &zip_y_scaler 8 10
 >;
