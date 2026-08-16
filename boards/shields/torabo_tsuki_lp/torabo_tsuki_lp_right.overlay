@@ -1,6 +1,19 @@
 #include "torabo_tsuki_lp.dtsi"
 #include <input/processors.dtsi>
 #include <dt-bindings/zmk/input_transform.h>
+#include <zephyr/dt-bindings/input/input-event-codes.h>
+
+/ {
+    input_processors {
+        zip_scroll_x_scaler: zip_scroll_x_scaler {
+            compatible = "zmk,input-processor-scaler";
+            #input-processor-cells = <2>;
+            type = <INPUT_EV_REL>;
+            codes = <INPUT_REL_HWHEEL>;
+            track-remainders;
+        };
+    };
+};
 
 /* --- オートマウス発動条件の調整 ---
  * 打鍵の振動でボールが微動 -> AML誤発動 -> 次のk/jがクリック化、を防ぐ。
@@ -25,7 +38,8 @@ scroller {
         layers = <2>;
         input-processors = <
             &zip_xy_transform (INPUT_TRANSFORM_X_INVERT)
-            &zip_xy_to_scroll_mapper>;
+            &zip_xy_to_scroll_mapper
+            &zip_scroll_x_scaler 0 1>;
         process-next;
     };
 };
